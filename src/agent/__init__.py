@@ -1,10 +1,11 @@
 """
 Agent Orchestrator subsystem:
-Coordinates Audio I/O, VAD, ASR, LLM, TTS, and the Tool Commit Gate.
+Coordinates Audio I/O, VAD, ASR, LLM, and the Tool Commit Gate.
 """
 
 from typing import Protocol
 
+from src.agent.orchestrator import VoiceAgentOrchestrator, register_default_mock_tools
 from src.core.state import AgentState, SessionState
 
 
@@ -22,4 +23,10 @@ class VoiceAgent(Protocol):
         ...
 
 
-__all__ = ["AgentState", "SessionState", "VoiceAgent"]
+__all__ = [
+    "AgentState",
+    "SessionState",
+    "VoiceAgent",
+    "VoiceAgentOrchestrator",
+    "register_default_mock_tools",
+]

@@ -1,10 +1,36 @@
 """
-Text-to-Speech (TTS) subsystem:
-Synthesizes speech audio streams with low latency and immediate cancellation support.
+Text-to-Speech (TTS) and interruptible audio playback subsystem.
+
+Provides provider-independent streaming speech synthesis (with Kokoro and FakeTTS),
+asynchronous playback queuing, and low-latency cancellation on user barge-in.
 """
 
-from typing import Protocol
+from src.tts.base import (
+    AudioChunk,
+    TTSCancelledError,
+    TTSConnectionError,
+    TTSError,
+    TTSProvider,
+)
+from src.tts.kokoro import KokoroTTS
+from src.tts.manager import TTSPlaybackManager
+from src.tts.mock import FakeTTS
+from src.tts.player import (
+    AudioPlayer,
+    FakeAudioPlayer,
+    SoundDeviceAudioPlayer,
+)
 
-
-class TTSEngine(Protocol):
-    """Protocol for streaming text-to-speech synthesis with interruption support."""
+__all__ = [
+    "AudioChunk",
+    "AudioPlayer",
+    "FakeAudioPlayer",
+    "FakeTTS",
+    "KokoroTTS",
+    "SoundDeviceAudioPlayer",
+    "TTSCancelledError",
+    "TTSConnectionError",
+    "TTSError",
+    "TTSPlaybackManager",
+    "TTSProvider",
+]

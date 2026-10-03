@@ -91,10 +91,42 @@ def create_order_tracking_schema() -> ToolSchema:
     return schema
 
 
+def create_temperature_schema() -> ToolSchema:
+    """Schema for adjusting the smart thermostat temperature."""
+    schema = ToolSchema(
+        name="set_temperature",
+        description="Set the target thermostat temperature in degrees Celsius for a specific room or zone.",
+    )
+    schema.add_parameter(
+        ToolParameter(
+            name="zone",
+            param_type="string",
+            description="The room or zone name (e.g. living_room, bedroom, office).",
+            required=True,
+        )
+    )
+    schema.add_parameter(
+        ToolParameter(
+            name="temperature_c",
+            param_type="number",
+            description="Target temperature in Celsius (e.g. 21, 22.5).",
+            required=True,
+        )
+    )
+    return schema
+
+
 def get_default_tool_registry() -> ToolRegistry:
     """Instantiate and populate a ToolRegistry with standard domain tool schemas."""
     registry = ToolRegistry()
     registry.register(create_flight_search_schema())
     registry.register(create_exchange_rate_schema())
     registry.register(create_order_tracking_schema())
+    return registry
+
+
+def get_voice_agent_tool_registry() -> ToolRegistry:
+    """Instantiate ToolRegistry with full agent domain tools including temperature control."""
+    registry = get_default_tool_registry()
+    registry.register(create_temperature_schema())
     return registry
