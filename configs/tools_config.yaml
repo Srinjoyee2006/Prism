@@ -1,0 +1,23 @@
+commit_gate:
+  default_policy: "staged"       # "immediate" vs "staged"
+  staging_timeout_ms: 1000      # Wait window before auto-committing non-critical actions
+  require_ack_turn: true        # Agent must verbally acknowledge before action execution
+  cancel_on_interruption: true  # Drop staged calls if user interrupts during acknowledgment
+
+tools:
+  - name: "check_availability"
+    description: "Check booking or slot availability (Read-only)"
+    commit_level: "immediate"   # Safe to execute without blocking
+    timeout_ms: 2000
+
+  - name: "reserve_slot"
+    description: "Create a reservation (State-mutating)"
+    commit_level: "staged"      # Requires commit gate verification
+    timeout_ms: 3000
+    requires_explicit_confirmation: false
+
+  - name: "cancel_reservation"
+    description: "Cancel an existing reservation (Destructive)"
+    commit_level: "staged"
+    timeout_ms: 3000
+    requires_explicit_confirmation: true

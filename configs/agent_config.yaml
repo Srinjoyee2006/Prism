@@ -1,0 +1,38 @@
+audio:
+  sample_rate: 16000
+  channels: 1
+  chunk_size_samples: 512       # 32ms window at 16kHz
+  format: "int16"
+
+vad:
+  engine: "silero_onnx"
+  threshold: 0.5                # Probability threshold for speech
+  neg_threshold: 0.35           # Probability threshold to return to silence
+  min_speech_duration_ms: 100   # Avoid noise spikes
+  min_silence_duration_ms: 400  # Pause duration to consider speech segment ended
+  speech_pad_ms: 30             # Buffer around detected speech
+
+asr:
+  engine: "faster_whisper"
+  model_size: "tiny.en"         # Fast CPU inference (alternatives: base.en, small.en)
+  compute_type: "int8"          # Quantized for fast CPU execution
+  language: "en"
+  beam_size: 1
+  vad_filter: false             # We handle VAD directly in our streaming pipeline
+
+llm:
+  provider: "ollama"
+  base_url: "http://localhost:11434"
+  model: "qwen2.5:1.5b"         # Lightweight, fast CPU inference, strong function calling
+  temperature: 0.2
+  streaming: true
+
+tts:
+  engine: "edge_tts"            # Zero-cost neural TTS
+  voice: "en-US-GuyNeural"
+  fallback_engine: "pyttsx3"
+
+interruption:
+  enabled: true
+  barge_in_delay_ms: 80         # Audio playback cutoff latency
+  flush_buffers_on_interrupt: true

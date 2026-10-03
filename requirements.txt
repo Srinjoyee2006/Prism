@@ -1,0 +1,27 @@
+# --- Audio I/O & Signal Processing ---
+sounddevice>=0.4.6
+numpy>=1.24.0,<2.0.0
+scipy>=1.10.0
+
+# --- Voice Activity Detection (VAD) ---
+# Silero VAD / ONNX inference on CPU
+onnxruntime>=1.16.0
+
+# --- Speech-to-Text (ASR) ---
+# Fast local Whisper on CPU (CTranslate2 int8)
+faster-whisper>=1.0.0
+
+# --- Text-to-Speech (TTS) ---
+# Zero-cost high quality neural TTS (online free endpoint)
+edge-tts>=6.1.10
+# Offline fallback TTS engine
+pyttsx3>=2.90
+
+# --- LLM Client & Async Networking ---
+httpx>=0.27.0
+aiohttp>=3.9.0
+
+# --- Data Modeling, Configuration & Schemas ---
+pydantic>=2.7.0
+pyyaml>=6.0.1
+python-dotenv>=1.0.1
