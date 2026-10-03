@@ -1,0 +1,36 @@
+{
+  "id": "finance_14",
+  "domain": "finance_billing",
+  "title": "Two Currency Conversions",
+  "difficulty": "medium",
+  "dialogue": [
+    {
+      "user": "Like... first, can you tell me how much 50 US dollars would be in euros? And then also, how much would 100 Canadian dollars be in US dollars?... um, I need both numbers.",
+      "user_annotated": "Like... first, can you tell me how much 50 US dollars would be in euros? And then also, how much would 100 Canadian dollars be in US dollars?... um, I need both numbers.",
+      "ai": "I'll calculate both conversions for you."
+    }
+  ],
+  "acting_notes": "Speak quickly and clearly.",
+  "disfluency_features": [],
+  "expected_tool_calls": [
+    {
+      "function": "get_exchange_rate",
+      "args": {
+        "amount": 50,
+        "from_currency": "USD",
+        "to_currency": "EUR"
+      }
+    },
+    {
+      "function": "get_exchange_rate",
+      "args": {
+        "amount": 100,
+        "from_currency": "CAD",
+        "to_currency": "USD"
+      }
+    }
+  ],
+  "num_expected_calls": 2,
+  "state_rollback_test": false,
+  "latency_profile": "fast"
+}

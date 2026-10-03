@@ -1,0 +1,29 @@
+{
+  "id": "housing_03",
+  "domain": "housing_location",
+  "title": "Filter Update with Fillers",
+  "difficulty": "easy",
+  "dialogue": [
+    {
+      "user": "Um... so well, like... um,... um, I want to update my search filter so the max price is, like, 1800 a month. Everything I've been seeing is over budget.",
+      "user_annotated": "Um... so well, like... um,... um, I want to update my search filter so the max price is, like, 1800 a month. Everything I've been seeing is over budget.",
+      "ai": "I'll update the max price filter to $1800."
+    }
+  ],
+  "acting_notes": "Use 'um' and 'like' naturally.",
+  "disfluency_features": [
+    "FILLER"
+  ],
+  "expected_tool_calls": [
+    {
+      "function": "update_search_filter",
+      "args": {
+        "filter_name": "max_price",
+        "value": 1800
+      }
+    }
+  ],
+  "num_expected_calls": 1,
+  "state_rollback_test": false,
+  "latency_profile": "normal"
+}

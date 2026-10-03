@@ -1,0 +1,28 @@
+{
+  "id": "housing_02",
+  "domain": "housing_location",
+  "title": "Simple Commute Check",
+  "difficulty": "easy",
+  "dialogue": [
+    {
+      "user": "Hmm... uh... like, could you tell me how long it would take to drive from 101 Main Street to the Downtown Office during a normal day?... um...... um, I want to make sure it's reasonable.",
+      "user_annotated": "Hmm... uh... like, could you tell me how long it would take to drive from 101 Main Street to the Downtown Office during a normal day?... um...... um, I want to make sure it's reasonable.",
+      "ai": "I will calculate the driving commute time for you."
+    }
+  ],
+  "acting_notes": "Clear, direct tone.",
+  "disfluency_features": [],
+  "expected_tool_calls": [
+    {
+      "function": "calculate_commute",
+      "args": {
+        "origin_address": "101 Main Street",
+        "destination_address": "Downtown Office",
+        "mode": "driving"
+      }
+    }
+  ],
+  "num_expected_calls": 1,
+  "state_rollback_test": false,
+  "latency_profile": "normal"
+}

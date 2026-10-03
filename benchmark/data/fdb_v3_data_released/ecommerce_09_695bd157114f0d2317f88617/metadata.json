@@ -1,0 +1,36 @@
+{
+  "id": "ecommerce_09",
+  "domain": "ecommerce_support",
+  "title": "Product Search Self-Correction",
+  "difficulty": "medium",
+  "dialogue": [
+    {
+      "user": "Like... well... hmm... could you search for running shoes — actually no...... um, I just remembered I already have running shoes. Search for hiking boots instead, that's what I actually need.",
+      "user_annotated": "Like... well... hmm... could you search for running shoes — actually no...... um, I just remembered I already have running shoes. Search for hiking boots instead, that's what I actually need.",
+      "ai": "I will search for hiking boots for you."
+    }
+  ],
+  "acting_notes": "Quickly correct the search item.",
+  "disfluency_features": [
+    "SELF_CORRECTION"
+  ],
+  "expected_tool_calls": [
+    {
+      "function": "search_products",
+      "args": {
+        "query": "hiking boots"
+      }
+    }
+  ],
+  "num_expected_calls": 1,
+  "state_rollback_test": true,
+  "state_rollback_details": {
+    "original_param": {
+      "query": "running shoes"
+    },
+    "corrected_param": {
+      "query": "hiking boots"
+    }
+  },
+  "latency_profile": "fast"
+}

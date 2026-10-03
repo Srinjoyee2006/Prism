@@ -1,0 +1,30 @@
+{
+  "id": "travel_05",
+  "domain": "travel_identity",
+  "title": "Flight Search with Hesitation",
+  "difficulty": "easy",
+  "dialogue": [
+    {
+      "user": "Um, so uh, I need to get to Chicago sometime around... let me think... I believe it's December 12th. Yeah, could you look up flights for that day?",
+      "user_annotated": "Um, so uh, I need to get to Chicago sometime around... let me think... I believe it's December 12th. Yeah, could you look up flights for that day?",
+      "ai": "I'll look up flights to Chicago for December 12th right away."
+    }
+  ],
+  "acting_notes": "Use 'uh' then hesitate briefly before remembering the date.",
+  "disfluency_features": [
+    "FILLER",
+    "HESITATION"
+  ],
+  "expected_tool_calls": [
+    {
+      "function": "search_flights",
+      "args": {
+        "destination": "Chicago",
+        "date": "December 12"
+      }
+    }
+  ],
+  "num_expected_calls": 1,
+  "state_rollback_test": false,
+  "latency_profile": "normal"
+}

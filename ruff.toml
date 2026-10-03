@@ -1,0 +1,14 @@
+target-version = "py311"
+line-length = 120
+
+exclude = [
+    ".venv",
+    ".git",
+    "benchmark/official_v3",
+    "benchmark/data",
+    "scratch",
+]
+
+[lint]
+select = ["E", "F", "W"]
+ignore = ["E402", "E501"]

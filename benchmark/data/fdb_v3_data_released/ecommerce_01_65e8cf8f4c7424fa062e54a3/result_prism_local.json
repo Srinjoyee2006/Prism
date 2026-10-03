@@ -1,0 +1,258 @@
+{
+  "pid": "65e8cf8f4c7424fa062e54a3",
+  "example_id": "ecommerce_01",
+  "category": "ecommerce_support",
+  "title": "Simple Order Tracking",
+  "provider": "prism_local",
+  "evaluated_at": "2026-10-03T19:35:15.684050+00:00",
+  "inference_time_s": 75.38,
+  "room_name": "fdb-ecommerce_01-b7b45d",
+  "stream_start_time": 1791056067.60626,
+  "input_transcript": "like you know well I ordered something last week and I haven't received it yet  could you track it for me the order ID is a b c 1 2 3",
+  "input_asr_chunks": [
+    {
+      "text": "like",
+      "timestamp": [
+        1.28,
+        2.12
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        2.12,
+        2.96
+      ]
+    },
+    {
+      "text": "know",
+      "timestamp": [
+        2.96,
+        3.66
+      ]
+    },
+    {
+      "text": "well",
+      "timestamp": [
+        3.66,
+        4.14
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        4.14,
+        4.4
+      ]
+    },
+    {
+      "text": "ordered",
+      "timestamp": [
+        4.4,
+        4.62
+      ]
+    },
+    {
+      "text": "something",
+      "timestamp": [
+        4.62,
+        5.0
+      ]
+    },
+    {
+      "text": "last",
+      "timestamp": [
+        5.0,
+        5.38
+      ]
+    },
+    {
+      "text": "week",
+      "timestamp": [
+        5.38,
+        5.8
+      ]
+    },
+    {
+      "text": "and",
+      "timestamp": [
+        5.8,
+        6.78
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        6.78,
+        7.68
+      ]
+    },
+    {
+      "text": "haven't",
+      "timestamp": [
+        7.68,
+        7.94
+      ]
+    },
+    {
+      "text": "received",
+      "timestamp": [
+        7.94,
+        8.26
+      ]
+    },
+    {
+      "text": "it",
+      "timestamp": [
+        8.26,
+        8.48
+      ]
+    },
+    {
+      "text": "yet",
+      "timestamp": [
+        8.48,
+        8.9
+      ]
+    },
+    {
+      "text": "could",
+      "timestamp": [
+        8.9,
+        9.1
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        9.1,
+        9.28
+      ]
+    },
+    {
+      "text": "track",
+      "timestamp": [
+        9.28,
+        9.52
+      ]
+    },
+    {
+      "text": "it",
+      "timestamp": [
+        9.52,
+        9.74
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        9.74,
+        9.86
+      ]
+    },
+    {
+      "text": "me",
+      "timestamp": [
+        9.86,
+        10.46
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        10.46,
+        10.84
+      ]
+    },
+    {
+      "text": "order",
+      "timestamp": [
+        10.84,
+        11.08
+      ]
+    },
+    {
+      "text": "ID",
+      "timestamp": [
+        11.08,
+        11.58
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        11.58,
+        12.18
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        12.18,
+        12.76
+      ]
+    },
+    {
+      "text": "b",
+      "timestamp": [
+        12.76,
+        13.38
+      ]
+    },
+    {
+      "text": "c",
+      "timestamp": [
+        13.38,
+        14.1
+      ]
+    },
+    {
+      "text": "1",
+      "timestamp": [
+        14.1,
+        14.68
+      ]
+    },
+    {
+      "text": "2",
+      "timestamp": [
+        14.68,
+        15.14
+      ]
+    },
+    {
+      "text": "3",
+      "timestamp": [
+        15.14,
+        17.3
+      ]
+    }
+  ],
+  "user_speech_end_rel": 17.3,
+  "latency": {
+    "input_duration_s": 45.84,
+    "output_duration_s": 45.84,
+    "first_speech_s": 45.84
+  },
+  "transcript": "You  You",
+  "asr_chunks": [
+    {
+      "text": "You",
+      "timestamp": [
+        21.62,
+        23.02
+      ]
+    },
+    {
+      "text": "You",
+      "timestamp": [
+        43.64,
+        45.04
+      ]
+    }
+  ],
+  "audio_agent_speech_start": 21.62,
+  "perceived_total_latency": 4.32,
+  "actual_tool_calls": [],
+  "status": "completed"
+}

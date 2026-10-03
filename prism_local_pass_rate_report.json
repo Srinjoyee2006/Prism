@@ -1,0 +1,208 @@
+{
+  "benchmark_name": "In-the-Wild Speech & Multi-Step Tool Calling",
+  "evaluated_at": "2026-10-04T01:05:16.220274",
+  "total_scenarios": 7,
+  "overall_pass_rate": 0.0,
+  "passed": 0,
+  "failed": 7,
+  "failure_breakdown": {
+    "wrong_tools": 7,
+    "wrong_arguments": 0
+  },
+  "by_domain": {
+    "ecommerce_support": 0.0
+  },
+  "by_difficulty": {
+    "easy": 0.0
+  },
+  "by_num_tools": {
+    "1": 0.0
+  },
+  "by_disfluency_feature": {
+    "PAUSE": 0.0,
+    "FILLER": 0.0,
+    "HESITATION": 0.0,
+    "FALSE_START": 0.0
+  },
+  "by_state_rollback": {
+    "with_rollback": null,
+    "without_rollback": 0.0
+  },
+  "scenario_results": [
+    {
+      "scenario_id": "ecommerce_01",
+      "domain": "ecommerce_support",
+      "difficulty": "easy",
+      "title": "Simple Order Tracking",
+      "num_tools": 1,
+      "disfluency": [],
+      "state_rollback": false,
+      "passed": false,
+      "checks": {
+        "tool_selection": {
+          "passed": false,
+          "expected": [
+            "track_order"
+          ],
+          "actual": [],
+          "missing": [
+            "track_order"
+          ],
+          "unexpected": []
+        }
+      },
+      "failure_reason": "Missing tools: ['track_order']"
+    },
+    {
+      "scenario_id": "ecommerce_01",
+      "domain": "ecommerce_support",
+      "difficulty": "easy",
+      "title": "Simple Order Tracking",
+      "num_tools": 1,
+      "disfluency": [],
+      "state_rollback": false,
+      "passed": false,
+      "checks": {
+        "tool_selection": {
+          "passed": false,
+          "expected": [
+            "track_order"
+          ],
+          "actual": [],
+          "missing": [
+            "track_order"
+          ],
+          "unexpected": []
+        }
+      },
+      "failure_reason": "Missing tools: ['track_order']"
+    },
+    {
+      "scenario_id": "ecommerce_02",
+      "domain": "ecommerce_support",
+      "difficulty": "easy",
+      "title": "Simple Product Search",
+      "num_tools": 1,
+      "disfluency": [],
+      "state_rollback": false,
+      "passed": false,
+      "checks": {
+        "tool_selection": {
+          "passed": false,
+          "expected": [
+            "search_products"
+          ],
+          "actual": [],
+          "missing": [
+            "search_products"
+          ],
+          "unexpected": []
+        }
+      },
+      "failure_reason": "Missing tools: ['search_products']"
+    },
+    {
+      "scenario_id": "ecommerce_04",
+      "domain": "ecommerce_support",
+      "difficulty": "easy",
+      "title": "Order Tracking with Pause",
+      "num_tools": 1,
+      "disfluency": [
+        "PAUSE"
+      ],
+      "state_rollback": false,
+      "passed": false,
+      "checks": {
+        "tool_selection": {
+          "passed": false,
+          "expected": [
+            "track_order"
+          ],
+          "actual": [],
+          "missing": [
+            "track_order"
+          ],
+          "unexpected": []
+        }
+      },
+      "failure_reason": "Missing tools: ['track_order']"
+    },
+    {
+      "scenario_id": "ecommerce_05",
+      "domain": "ecommerce_support",
+      "difficulty": "easy",
+      "title": "Product Search with Hesitation",
+      "num_tools": 1,
+      "disfluency": [
+        "FILLER",
+        "HESITATION"
+      ],
+      "state_rollback": false,
+      "passed": false,
+      "checks": {
+        "tool_selection": {
+          "passed": false,
+          "expected": [
+            "search_products"
+          ],
+          "actual": [],
+          "missing": [
+            "search_products"
+          ],
+          "unexpected": []
+        }
+      },
+      "failure_reason": "Missing tools: ['search_products']"
+    },
+    {
+      "scenario_id": "ecommerce_06",
+      "domain": "ecommerce_support",
+      "difficulty": "easy",
+      "title": "Simple Cart Addition",
+      "num_tools": 1,
+      "disfluency": [],
+      "state_rollback": false,
+      "passed": false,
+      "checks": {
+        "tool_selection": {
+          "passed": false,
+          "expected": [
+            "add_to_cart"
+          ],
+          "actual": [],
+          "missing": [
+            "add_to_cart"
+          ],
+          "unexpected": []
+        }
+      },
+      "failure_reason": "Missing tools: ['add_to_cart']"
+    },
+    {
+      "scenario_id": "ecommerce_07",
+      "domain": "ecommerce_support",
+      "difficulty": "easy",
+      "title": "False Start Before Track",
+      "num_tools": 1,
+      "disfluency": [
+        "FALSE_START"
+      ],
+      "state_rollback": false,
+      "passed": false,
+      "checks": {
+        "tool_selection": {
+          "passed": false,
+          "expected": [
+            "track_order"
+          ],
+          "actual": [],
+          "missing": [
+            "track_order"
+          ],
+          "unexpected": []
+        }
+      },
+      "failure_reason": "Missing tools: ['track_order']"
+    }
+  ]
+}

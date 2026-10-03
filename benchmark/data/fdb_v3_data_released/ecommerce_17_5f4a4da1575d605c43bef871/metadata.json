@@ -1,0 +1,28 @@
+{
+  "id": "ecommerce_17",
+  "domain": "ecommerce_support",
+  "title": "False Start then Track",
+  "difficulty": "medium",
+  "dialogue": [
+    {
+      "user": "Like... hmm... can you cancel my — actually... never mind the cancellation,... um... I changed my mind about that. Could you just track order G-G-5 for me instead? I want to see where it is.",
+      "user_annotated": "Like... hmm... can you cancel my — actually... never mind the cancellation,... um... I changed my mind about that. Could you just track order G-G-5 for me instead? I want to see where it is.",
+      "ai": "I'll track order GG5 for you."
+    }
+  ],
+  "acting_notes": "Start asking about a cancellation, drop it, then ask for tracking.",
+  "disfluency_features": [
+    "FALSE_START"
+  ],
+  "expected_tool_calls": [
+    {
+      "function": "track_order",
+      "args": {
+        "order_id": "GG5"
+      }
+    }
+  ],
+  "num_expected_calls": 1,
+  "state_rollback_test": false,
+  "latency_profile": "normal"
+}

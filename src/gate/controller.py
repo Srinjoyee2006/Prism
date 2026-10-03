@@ -309,7 +309,7 @@ class ToolController:
             async with self._lock:
                 staged.mark_succeeded(result)
             logger.info(
-                "ToolController: tool '%s' succeeded → %r",
+                "ToolController: tool '%s' succeeded -> %r",
                 staged.tool_name,
                 result,
             )

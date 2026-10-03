@@ -233,3 +233,32 @@ python -m pytest -q
 | Commit Gate Quiet Window & Barge-in tests | **No** (Simulated VAD speech onset) | **Yes** |
 | Full offline simulation (`demo_livekit.py --offline-test`) | **No** | **Yes** |
 | Live WebRTC connection with browser/participant | **Yes** (Local Docker LiveKit or LiveKit Cloud) | **No** |
+
+---
+
+## 10. Local Real-Time Participant Testing (3-Terminal Setup)
+
+For end-to-end testing of physical computer microphone -> LiveKit WebRTC -> Prism Agent -> LiveKit audio output -> computer speakers:
+
+### Terminal 1: Local LiveKit Server
+```powershell
+docker run --rm -it -p 7880:7880 -p 7881:7881 -p 7882:7882/udp livekit/livekit-server --dev
+```
+
+### Terminal 2: Prism Agent Worker
+```powershell
+.\.venv\Scripts\python -m src.livekit_agent dev
+```
+
+### Terminal 3: Local WebRTC Participant Server
+```powershell
+.\.venv\Scripts\python examples/run_participant.py
+```
+This automatically launches your web browser at `http://127.0.0.1:8080` with the local JWT token pre-filled.
+
+Click **"Connect & Start Mic"**:
+1. Grants microphone access and publishes audio to `prism-test`.
+2. The visual meter reacts to your voice.
+3. Prism's VAD and STT transcribe your speech and pass it to Ollama.
+4. When tool actions or responses are synthesized by Kokoro, the agent's audio is played directly through your speakers.
+5. You can test barge-in interruption by speaking while the agent is speaking.

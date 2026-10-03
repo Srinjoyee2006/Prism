@@ -1,0 +1,314 @@
+{
+  "pid": "66f59c766e7e22e1f90d08f6",
+  "example_id": "ecommerce_07",
+  "category": "ecommerce_support",
+  "title": "False Start Before Track",
+  "provider": "prism_local",
+  "evaluated_at": "2026-10-03T19:23:40.563360+00:00",
+  "inference_time_s": 91.21,
+  "room_name": "fdb-ecommerce_07-3cdf01",
+  "stream_start_time": 1791055353.323191,
+  "input_transcript": "So, could you, um, I wanted to search for a new product, actually, no, never mind, never  mind.  Forget that for now.  Could you just track my order instead?  Um, the ID is F-A-S-T-9-9.",
+  "input_asr_chunks": [
+    {
+      "text": "So,",
+      "timestamp": [
+        0.92,
+        1.44
+      ]
+    },
+    {
+      "text": "could",
+      "timestamp": [
+        2.46,
+        2.72
+      ]
+    },
+    {
+      "text": "you,",
+      "timestamp": [
+        2.72,
+        3.36
+      ]
+    },
+    {
+      "text": "um,",
+      "timestamp": [
+        3.52,
+        4.22
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        4.24,
+        4.52
+      ]
+    },
+    {
+      "text": "wanted",
+      "timestamp": [
+        4.52,
+        4.78
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        4.78,
+        5.58
+      ]
+    },
+    {
+      "text": "search",
+      "timestamp": [
+        5.58,
+        5.96
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        5.96,
+        6.26
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        6.26,
+        6.36
+      ]
+    },
+    {
+      "text": "new",
+      "timestamp": [
+        6.36,
+        6.66
+      ]
+    },
+    {
+      "text": "product,",
+      "timestamp": [
+        6.66,
+        7.1
+      ]
+    },
+    {
+      "text": "actually,",
+      "timestamp": [
+        7.12,
+        7.44
+      ]
+    },
+    {
+      "text": "no,",
+      "timestamp": [
+        7.62,
+        7.72
+      ]
+    },
+    {
+      "text": "never",
+      "timestamp": [
+        7.94,
+        7.94
+      ]
+    },
+    {
+      "text": "mind,",
+      "timestamp": [
+        7.94,
+        8.24
+      ]
+    },
+    {
+      "text": "never",
+      "timestamp": [
+        8.44,
+        8.44
+      ]
+    },
+    {
+      "text": "mind.",
+      "timestamp": [
+        8.44,
+        8.66
+      ]
+    },
+    {
+      "text": "Forget",
+      "timestamp": [
+        8.74,
+        8.82
+      ]
+    },
+    {
+      "text": "that",
+      "timestamp": [
+        8.82,
+        9.14
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        9.14,
+        9.24
+      ]
+    },
+    {
+      "text": "now.",
+      "timestamp": [
+        9.24,
+        9.52
+      ]
+    },
+    {
+      "text": "Could",
+      "timestamp": [
+        10.14,
+        10.18
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        10.18,
+        10.32
+      ]
+    },
+    {
+      "text": "just",
+      "timestamp": [
+        10.32,
+        10.46
+      ]
+    },
+    {
+      "text": "track",
+      "timestamp": [
+        10.46,
+        10.64
+      ]
+    },
+    {
+      "text": "my",
+      "timestamp": [
+        10.64,
+        10.88
+      ]
+    },
+    {
+      "text": "order",
+      "timestamp": [
+        10.88,
+        11.1
+      ]
+    },
+    {
+      "text": "instead?",
+      "timestamp": [
+        11.1,
+        11.88
+      ]
+    },
+    {
+      "text": "Um,",
+      "timestamp": [
+        11.88,
+        12.38
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        12.4,
+        12.54
+      ]
+    },
+    {
+      "text": "ID",
+      "timestamp": [
+        12.54,
+        12.82
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        12.82,
+        13.92
+      ]
+    },
+    {
+      "text": "F",
+      "timestamp": [
+        13.92,
+        14.56
+      ]
+    },
+    {
+      "text": "-A",
+      "timestamp": [
+        14.56,
+        15.2
+      ]
+    },
+    {
+      "text": "-S",
+      "timestamp": [
+        15.2,
+        15.88
+      ]
+    },
+    {
+      "text": "-T",
+      "timestamp": [
+        15.88,
+        16.88
+      ]
+    },
+    {
+      "text": "-9",
+      "timestamp": [
+        16.88,
+        17.54
+      ]
+    },
+    {
+      "text": "-9.",
+      "timestamp": [
+        17.54,
+        18.88
+      ]
+    }
+  ],
+  "user_speech_end_rel": 18.88,
+  "latency": {
+    "input_duration_s": 50.04,
+    "output_duration_s": 50.04,
+    "first_speech_s": 50.04
+  },
+  "transcript": "You  You",
+  "asr_chunks": [
+    {
+      "text": "You",
+      "timestamp": [
+        21.62,
+        23.02
+      ]
+    },
+    {
+      "text": "You",
+      "timestamp": [
+        35.44,
+        36.84
+      ]
+    }
+  ],
+  "audio_agent_speech_start": 21.62,
+  "perceived_total_latency": 2.74,
+  "actual_tool_calls": [],
+  "status": "completed"
+}

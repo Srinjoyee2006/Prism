@@ -206,7 +206,22 @@ async def test_live_faster_whisper_if_model_available():
         pytest.skip("faster-whisper model not downloaded locally; skipping live integration test.")
 
     try:
-        stt = FasterWhisperSTT(model_size_or_path="tiny.en", device="cpu", compute_type="int8")
+        stt = FasterWhisperSTT(
+            model_size_or_path="tiny.en",
+            device="cpu",
+            compute_type="int8",
+            condition_on_previous_text=False,
+            temperature=0.0,
+            without_timestamps=True,
+        )
+        assert not stt.condition_on_previous_text
+        assert stt.temperature == 0.0
+        assert stt.without_timestamps
+
+        # Test warmup
+        await stt.warmup()
+        assert stt.is_available()
+
         seg = make_test_segment()
         res = await stt.transcribe(seg)
         assert isinstance(res, Transcript)

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prism Voice Agent - Local Web Participant</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-color: #c9d1d9;
+            --text-muted: #8b949e;
+            --primary: #58a6ff;
+            --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
+            --agent-speaking: #a371f7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 680px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        header {
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            color: #f0f6fc;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        input {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+            font-family: monospace;
+            width: 100%;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        button {
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 0.6rem 1.25rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: background 0.15s ease, opacity 0.15s ease;
+        }
+
+        .btn-primary {
+            background-color: #238636;
+            color: #fff;
+        }
+        .btn-primary:hover:not(:disabled) {
+            background-color: #2ea043;
+        }
+
+        .btn-danger {
+            background-color: #da3633;
+            color: #fff;
+        }
+        .btn-danger:hover:not(:disabled) {
+            background-color: #f85149;
+        }
+
+        .btn-secondary {
+            background-color: #21262d;
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #30363d;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-badge.disconnected {
+            background: rgba(248, 81, 73, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(248, 81, 73, 0.4);
+        }
+        .status-badge.connected {
+            background: rgba(63, 185, 80, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(63, 185, 80, 0.4);
+        }
+        .status-badge.speaking {
+            background: rgba(163, 113, 247, 0.2);
+            color: var(--agent-speaking);
+            border: 1px solid rgba(163, 113, 247, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        .level-meter {
+            height: 12px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .level-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #2ea043, #d29922, #f85149);
+            transition: width 0.08s ease;
+        }
+
+        .log-box {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-family: Consolas, monospace;
+            font-size: 0.8rem;
+            height: 160px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            color: #8b949e;
+        }
+        .log-box .log-entry {
+            margin-bottom: 0.25rem;
+        }
+        .log-box .log-entry.agent {
+            color: var(--agent-speaking);
+        }
+        .log-box .log-entry.success {
+            color: var(--success);
+        }
+        .log-box .log-entry.warn {
+            color: var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Prism WebRTC Participant</h1>
+            <p class="subtitle">Local LiveKit Browser Client &middot; Microphone &amp; Speaker Testing</p>
+        </header>
+
+        <section class="card">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="wsUrl">LiveKit Server URL</label>
+                    <input type="text" id="wsUrl" value="ws://127.0.0.1:7880">
+                </div>
+                <div class="form-group">
+                    <label for="roomName">Room Name</label>
+                    <input type="text" id="roomName" value="prism-test">
+                </div>
+                <div class="form-group full">
+                    <label for="token">Participant JWT Token</label>
+                    <input type="text" id="token" placeholder="Generating token...">
+                </div>
+            </div>
+
+            <div class="btn-row">
+                <button id="connectBtn" class="btn-primary" onclick="connect()">Connect &amp; Start Mic</button>
+                <button id="disconnectBtn" class="btn-danger" onclick="disconnect()" disabled>Disconnect</button>
+                <button id="muteBtn" class="btn-secondary" onclick="toggleMute()" disabled>Mute Mic</button>
+            </div>
+        </section>
+
+        <section class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                <span style="font-weight: 600;">Status</span>
+                <span id="statusBadge" class="status-badge disconnected">&#9679; Disconnected</span>
+            </div>
+
+            <div>
+                <label>Microphone Activity Level</label>
+                <div class="level-meter">
+                    <div id="micMeter" class="level-fill"></div>
+                </div>
+            </div>
+
+            <div id="audioElements" style="display: none;"></div>
+        </section>
+
+        <section class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <label>Connection &amp; Conversation Log</label>
+                <button class="btn-secondary" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="clearLogs()">Clear</button>
+            </div>
+            <div id="logBox" class="log-box"></div>
+        </section>
+    </div>
+
+    <!-- LiveKit Client SDK: Try local bundle first, fallback to CDN -->
+    <script src="livekit-client.umd.min.js"></script>
+    <script>
+        if (typeof LivekitClient === "undefined") {
+            const fallback = document.createElement("script");
+            fallback.src = "https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js";
+            document.head.appendChild(fallback);
+        }
+    </script>
+
+    <script>
+        let currentRoom = null;
+        let audioContext = null;
+        let micStream = null;
+        let analyser = null;
+        let meterInterval = null;
+        let isMuted = false;
+
+        function log(msg, type = "normal") {
+            const logBox = document.getElementById("logBox");
+            const entry = document.createElement("div");
+            entry.className = `log-entry ${type}`;
+            const time = new Date().toLocaleTimeString();
+            entry.textContent = `[${time}] ${msg}`;
+            logBox.appendChild(entry);
+            logBox.scrollTop = logBox.scrollHeight;
+        }
+
+        function clearLogs() {
+            document.getElementById("logBox").innerHTML = "";
+        }
+
+        function updateStatus(text, className) {
+            const badge = document.getElementById("statusBadge");
+            badge.className = `status-badge ${className}`;
+            badge.innerHTML = `&#9679; ${text}`;
+        }
+
+        // Fetch local dev token on page load
+        async function fetchToken() {
+            try {
+                const room = document.getElementById("roomName").value || "prism-test";
+                const res = await fetch(`/api/token?room=${encodeURIComponent(room)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById("token").value = data.token;
+                    log("Fetched local dev token for room: " + room, "success");
+                }
+            } catch (e) {
+                log("Could not auto-fetch token from /api/token. Using manual token if provided.", "warn");
+            }
+        }
+        window.addEventListener("DOMContentLoaded", fetchToken);
+
+        async function connect() {
+            const url = document.getElementById("wsUrl").value.trim();
+            const token = document.getElementById("token").value.trim();
+
+            if (!url || !token) {
+                alert("Please provide both LiveKit Server URL and Participant JWT Token.");
+                return;
+            }
+
+            if (typeof LivekitClient === "undefined") {
+                alert("LiveKit Client SDK is still loading. Please wait 1 second and retry.");
+                return;
+            }
+
+            updateStatus("Connecting...", "warn");
+            log(`Connecting to ${url}...`);
+
+            try {
+                const room = new LivekitClient.Room({
+                    adaptiveStream: true,
+                    dynacast: true,
+                });
+                currentRoom = room;
+
+                // Wire room events
+                room.on(LivekitClient.RoomEvent.Connected, () => {
+                    updateStatus("Connected", "connected");
+                    log("Connected to room: " + room.name, "success");
+                    document.getElementById("connectBtn").disabled = true;
+                    document.getElementById("disconnectBtn").disabled = false;
+                    document.getElementById("muteBtn").disabled = false;
+                });
+
+                room.on(LivekitClient.RoomEvent.Disconnected, () => {
+                    updateStatus("Disconnected", "disconnected");
+                    log("Disconnected from LiveKit room.", "warn");
+                    cleanup();
+                });
+
+                // Listen for Agent audio tracks
+                room.on(LivekitClient.RoomEvent.TrackSubscribed, (track, publication, participant) => {
+                    log(`Subscribed to remote track '${track.kind}' from: ${participant.identity}`, "success");
+                    if (track.kind === LivekitClient.Track.Kind.Audio) {
+                        const audioElement = track.attach();
+                        document.getElementById("audioElements").appendChild(audioElement);
+                        log("Agent audio attached to speaker playout.", "agent");
+                        updateStatus("Agent Connected", "connected");
+                    }
+                });
+
+                room.on(LivekitClient.RoomEvent.TrackUnsubscribed, (track, publication, participant) => {
+                    log(`Unsubscribed from track '${track.kind}' of ${participant.identity}`);
+                    track.detach();
+                });
+
+                room.on(LivekitClient.RoomEvent.ActiveSpeakersChanged, (speakers) => {
+                    const agentSpeaking = speakers.some(s => s.identity.includes("agent") || s.identity.includes("prism"));
+                    if (agentSpeaking) {
+                        updateStatus("Agent Speaking...", "speaking");
+                    } else if (room.state === LivekitClient.ConnectionState.Connected) {
+                        updateStatus("Connected (Listening)", "connected");
+                    }
+                });
+
+                // Connect to LiveKit server
+                await room.connect(url, token);
+
+                // Publish local microphone
+                log("Enabling and publishing microphone audio...");
+                await room.localParticipant.setMicrophoneEnabled(true);
+                log("Microphone published to room successfully!", "success");
+
+                // Start audio level visualizer
+                startMicMeter();
+
+            } catch (err) {
+                log("Connection error: " + err.message, "danger");
+                updateStatus("Connection Failed", "disconnected");
+                cleanup();
+            }
+        }
+
+        async function startMicMeter() {
+            try {
+                micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaStreamSource(micStream);
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                source.connect(analyser);
+
+                const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                const meterFill = document.getElementById("micMeter");
+
+                meterInterval = setInterval(() => {
+                    if (!analyser) return;
+                    analyser.getByteFrequencyData(dataArray);
+                    let sum = 0;
+                    for (let i = 0; i < dataArray.length; i++) {
+                        sum += dataArray[i];
+                    }
+                    const avg = sum / dataArray.length;
+                    const percent = Math.min(100, Math.round((avg / 128) * 100));
+                    meterFill.style.width = isMuted ? "0%" : `${percent}%`;
+                }, 50);
+            } catch (e) {
+                console.warn("Could not start visual meter:", e);
+            }
+        }
+
+        async function toggleMute() {
+            if (!currentRoom) return;
+            isMuted = !isMuted;
+            await currentRoom.localParticipant.setMicrophoneEnabled(!isMuted);
+            document.getElementById("muteBtn").textContent = isMuted ? "Unmute Mic" : "Mute Mic";
+            log(isMuted ? "Microphone muted." : "Microphone unmuted.", "warn");
+        }
+
+        async function disconnect() {
+            if (currentRoom) {
+                log("Disconnecting from room...");
+                await currentRoom.disconnect();
+            }
+            cleanup();
+        }
+
+        function cleanup() {
+            if (meterInterval) {
+                clearInterval(meterInterval);
+                meterInterval = null;
+            }
+            if (micStream) {
+                micStream.getTracks().forEach(t => t.stop());
+                micStream = null;
+            }
+            if (audioContext && audioContext.state !== "closed") {
+                audioContext.close();
+                audioContext = null;
+            }
+            document.getElementById("micMeter").style.width = "0%";
+            document.getElementById("connectBtn").disabled = false;
+            document.getElementById("disconnectBtn").disabled = true;
+            document.getElementById("muteBtn").disabled = true;
+            document.getElementById("audioElements").innerHTML = "";
+            currentRoom = null;
+        }
+    </script>
+</body>
+</html>

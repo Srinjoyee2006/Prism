@@ -61,3 +61,5 @@ models/
 
 # Ruff cache
 .ruff_cache/
+
+benchmark/data/fdb_v3_data_released.zip

@@ -43,7 +43,7 @@ class KokoroTTS(TTSProvider):
         response_format: str = "pcm",
         sample_rate: int = 24000,
         chunk_size_bytes: int = 4096,
-        timeout: float = 30.0,
+        timeout: float = 10.0,
         client: httpx.AsyncClient | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")

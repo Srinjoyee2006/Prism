@@ -1,0 +1,258 @@
+{
+  "pid": "6998abd731d2ec50d067d5bd",
+  "example_id": "ecommerce_04",
+  "category": "ecommerce_support",
+  "title": "Order Tracking with Pause",
+  "provider": "prism_local",
+  "evaluated_at": "2026-10-03T19:18:38.225190+00:00",
+  "inference_time_s": 79.26,
+  "room_name": "fdb-ecommerce_04-779600",
+  "stream_start_time": 1791055045.4662714,
+  "input_transcript": "You know, where is my package? Let me find the origin number here, the door number is x, y,  y, y, y, y, y, g, y, y, g, y, y, y.",
+  "input_asr_chunks": [
+    {
+      "text": "You",
+      "timestamp": [
+        0.82,
+        1.32
+      ]
+    },
+    {
+      "text": "know,",
+      "timestamp": [
+        1.32,
+        1.82
+      ]
+    },
+    {
+      "text": "where",
+      "timestamp": [
+        1.92,
+        2.04
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        2.04,
+        2.22
+      ]
+    },
+    {
+      "text": "my",
+      "timestamp": [
+        2.22,
+        2.58
+      ]
+    },
+    {
+      "text": "package?",
+      "timestamp": [
+        2.58,
+        3.02
+      ]
+    },
+    {
+      "text": "Let",
+      "timestamp": [
+        3.08,
+        3.22
+      ]
+    },
+    {
+      "text": "me",
+      "timestamp": [
+        3.22,
+        3.34
+      ]
+    },
+    {
+      "text": "find",
+      "timestamp": [
+        3.34,
+        4.26
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        4.26,
+        4.6
+      ]
+    },
+    {
+      "text": "origin",
+      "timestamp": [
+        4.6,
+        4.8
+      ]
+    },
+    {
+      "text": "number",
+      "timestamp": [
+        4.8,
+        5.2
+      ]
+    },
+    {
+      "text": "here,",
+      "timestamp": [
+        5.2,
+        5.68
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        5.76,
+        5.78
+      ]
+    },
+    {
+      "text": "door",
+      "timestamp": [
+        5.78,
+        5.9
+      ]
+    },
+    {
+      "text": "number",
+      "timestamp": [
+        5.9,
+        6.2
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        6.2,
+        6.7
+      ]
+    },
+    {
+      "text": "x,",
+      "timestamp": [
+        6.7,
+        6.88
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        29.98,
+        29.98
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        29.98,
+        29.98
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        29.98,
+        35.72
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        36.48,
+        36.48
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        37.06,
+        38.06
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        39.32,
+        39.32
+      ]
+    },
+    {
+      "text": "g,",
+      "timestamp": [
+        39.34,
+        39.34
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        40.18,
+        40.18
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        40.74,
+        40.74
+      ]
+    },
+    {
+      "text": "g,",
+      "timestamp": [
+        40.74,
+        40.74
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        40.74,
+        40.74
+      ]
+    },
+    {
+      "text": "y,",
+      "timestamp": [
+        40.74,
+        40.74
+      ]
+    },
+    {
+      "text": "y.",
+      "timestamp": [
+        40.74,
+        40.74
+      ]
+    }
+  ],
+  "user_speech_end_rel": 6.88,
+  "latency": {
+    "input_duration_s": 40.773,
+    "output_duration_s": 40.773,
+    "first_speech_s": 40.773
+  },
+  "transcript": "You  You",
+  "asr_chunks": [
+    {
+      "text": "You",
+      "timestamp": [
+        21.62,
+        23.02
+      ]
+    },
+    {
+      "text": "You",
+      "timestamp": [
+        39.34,
+        40.74
+      ]
+    }
+  ],
+  "audio_agent_speech_start": 21.62,
+  "perceived_total_latency": 14.74,
+  "actual_tool_calls": [],
+  "status": "completed"
+}

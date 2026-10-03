@@ -28,6 +28,9 @@ class FasterWhisperSTT(SpeechToText):
         compute_type: str = "int8",
         language: str = "en",
         beam_size: int = 1,
+        condition_on_previous_text: bool = False,
+        temperature: float = 0.0,
+        without_timestamps: bool = True,
         download_root: str | None = None,
         lazy_load: bool = True,
     ) -> None:
@@ -36,6 +39,9 @@ class FasterWhisperSTT(SpeechToText):
         self.compute_type = compute_type
         self.language = language
         self.beam_size = beam_size
+        self.condition_on_previous_text = condition_on_previous_text
+        self.temperature = temperature
+        self.without_timestamps = without_timestamps
         self.download_root = download_root
 
         self._model: Any | None = None
@@ -100,6 +106,9 @@ class FasterWhisperSTT(SpeechToText):
                 language=self.language,
                 beam_size=self.beam_size,
                 vad_filter=False,  # VAD already handled by segmenter
+                condition_on_previous_text=self.condition_on_previous_text,
+                temperature=self.temperature,
+                without_timestamps=self.without_timestamps,
             )
 
             # Segments is a generator; consume it in the worker thread
@@ -141,3 +150,22 @@ class FasterWhisperSTT(SpeechToText):
 
         # Delegate CPU-heavy inference to thread pool
         return await asyncio.to_thread(self._sync_transcribe, segment)
+
+    async def warmup(self) -> None:
+        """Pre-warm model by loading weights and running one dummy inference pass."""
+        await self._ensure_model_loaded()
+        from src.vad.segmenter import SpeechSegment
+
+        dummy_pcm = b"\x00" * 3200  # 100ms silence at 16kHz
+        dummy_seg = SpeechSegment(
+            segment_id="warmup",
+            pcm_data=dummy_pcm,
+            sample_rate=16000,
+            duration_ms=100.0,
+            total_samples=1600,
+        )
+        try:
+            await self.transcribe(dummy_seg)
+            logger.info("FasterWhisperSTT pre-warmed successfully.")
+        except Exception as exc:  # noqa: BLE001
+            logger.debug("FasterWhisperSTT warmup notice: %s", exc)

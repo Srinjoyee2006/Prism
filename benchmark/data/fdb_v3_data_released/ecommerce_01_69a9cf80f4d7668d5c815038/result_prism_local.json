@@ -1,0 +1,384 @@
+{
+  "pid": "69a9cf80f4d7668d5c815038",
+  "example_id": "ecommerce_01",
+  "category": "ecommerce_support",
+  "title": "Simple Order Tracking",
+  "provider": "prism_local",
+  "evaluated_at": "2026-10-03T19:15:13.536912+00:00",
+  "inference_time_s": 56.76,
+  "room_name": "fdb-ecommerce_01-b9e60b",
+  "stream_start_time": 1791054841.752638,
+  "input_transcript": "like you know well I ordered something last weekend I haven't received it yet  could you track it for me? the order ID is A, V, C, one, two, three",
+  "input_asr_chunks": [
+    {
+      "text": "like",
+      "timestamp": [
+        1.2,
+        1.92
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        1.92,
+        2.64
+      ]
+    },
+    {
+      "text": "know",
+      "timestamp": [
+        2.64,
+        3.92
+      ]
+    },
+    {
+      "text": "well",
+      "timestamp": [
+        3.92,
+        4.6
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        4.6,
+        5.02
+      ]
+    },
+    {
+      "text": "ordered",
+      "timestamp": [
+        5.02,
+        5.02
+      ]
+    },
+    {
+      "text": "something",
+      "timestamp": [
+        5.02,
+        5.38
+      ]
+    },
+    {
+      "text": "last",
+      "timestamp": [
+        5.38,
+        5.72
+      ]
+    },
+    {
+      "text": "weekend",
+      "timestamp": [
+        5.72,
+        6.64
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        6.64,
+        8.46
+      ]
+    },
+    {
+      "text": "haven't",
+      "timestamp": [
+        8.46,
+        8.78
+      ]
+    },
+    {
+      "text": "received",
+      "timestamp": [
+        8.78,
+        9.02
+      ]
+    },
+    {
+      "text": "it",
+      "timestamp": [
+        9.02,
+        9.26
+      ]
+    },
+    {
+      "text": "yet",
+      "timestamp": [
+        9.26,
+        10.16
+      ]
+    },
+    {
+      "text": "could",
+      "timestamp": [
+        10.16,
+        10.84
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        10.84,
+        11.04
+      ]
+    },
+    {
+      "text": "track",
+      "timestamp": [
+        11.04,
+        11.18
+      ]
+    },
+    {
+      "text": "it",
+      "timestamp": [
+        11.18,
+        11.4
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        11.4,
+        11.52
+      ]
+    },
+    {
+      "text": "me?",
+      "timestamp": [
+        11.52,
+        12.38
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        13.38,
+        13.54
+      ]
+    },
+    {
+      "text": "order",
+      "timestamp": [
+        13.54,
+        13.82
+      ]
+    },
+    {
+      "text": "ID",
+      "timestamp": [
+        13.82,
+        14.16
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        14.16,
+        14.88
+      ]
+    },
+    {
+      "text": "A,",
+      "timestamp": [
+        14.88,
+        15.42
+      ]
+    },
+    {
+      "text": "V,",
+      "timestamp": [
+        15.52,
+        15.88
+      ]
+    },
+    {
+      "text": "C,",
+      "timestamp": [
+        16.14,
+        16.74
+      ]
+    },
+    {
+      "text": "one,",
+      "timestamp": [
+        16.88,
+        17.28
+      ]
+    },
+    {
+      "text": "two,",
+      "timestamp": [
+        17.56,
+        18.1
+      ]
+    },
+    {
+      "text": "three",
+      "timestamp": [
+        18.14,
+        19.36
+      ]
+    }
+  ],
+  "user_speech_end_rel": 19.36,
+  "latency": {
+    "input_duration_s": 49.62,
+    "output_duration_s": 49.62,
+    "first_speech_s": 23.05
+  },
+  "transcript": "Tudo-Bem, Precise Odoguma Coisis Pacifica.  I'm sorry to hear that. Could you please provide more details about the item or...",
+  "asr_chunks": [
+    {
+      "text": "Tudo",
+      "timestamp": [
+        22.5,
+        23.4
+      ]
+    },
+    {
+      "text": "-Bem,",
+      "timestamp": [
+        23.4,
+        23.9
+      ]
+    },
+    {
+      "text": "Precise",
+      "timestamp": [
+        24.22,
+        24.5
+      ]
+    },
+    {
+      "text": "Odoguma",
+      "timestamp": [
+        24.5,
+        24.96
+      ]
+    },
+    {
+      "text": "Coisis",
+      "timestamp": [
+        24.96,
+        25.38
+      ]
+    },
+    {
+      "text": "Pacifica.",
+      "timestamp": [
+        25.38,
+        26.2
+      ]
+    },
+    {
+      "text": "I'm",
+      "timestamp": [
+        44.74,
+        45.36
+      ]
+    },
+    {
+      "text": "sorry",
+      "timestamp": [
+        45.36,
+        45.52
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        45.52,
+        45.76
+      ]
+    },
+    {
+      "text": "hear",
+      "timestamp": [
+        45.76,
+        45.9
+      ]
+    },
+    {
+      "text": "that.",
+      "timestamp": [
+        45.9,
+        46.46
+      ]
+    },
+    {
+      "text": "Could",
+      "timestamp": [
+        46.78,
+        46.86
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        46.86,
+        47.18
+      ]
+    },
+    {
+      "text": "please",
+      "timestamp": [
+        47.18,
+        47.36
+      ]
+    },
+    {
+      "text": "provide",
+      "timestamp": [
+        47.36,
+        47.74
+      ]
+    },
+    {
+      "text": "more",
+      "timestamp": [
+        47.74,
+        48.08
+      ]
+    },
+    {
+      "text": "details",
+      "timestamp": [
+        48.08,
+        48.5
+      ]
+    },
+    {
+      "text": "about",
+      "timestamp": [
+        48.5,
+        48.8
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        48.8,
+        49.06
+      ]
+    },
+    {
+      "text": "item",
+      "timestamp": [
+        49.06,
+        49.24
+      ]
+    },
+    {
+      "text": "or...",
+      "timestamp": [
+        49.24,
+        49.6
+      ]
+    }
+  ],
+  "audio_agent_speech_start": 22.5,
+  "perceived_total_latency": 3.14,
+  "actual_tool_calls": [],
+  "status": "completed"
+}

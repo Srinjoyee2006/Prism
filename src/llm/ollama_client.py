@@ -31,7 +31,7 @@ class OllamaClient(LLMClient):
         self,
         base_url: str = "http://localhost:11434",
         model: str = "qwen2.5:1.5b",
-        timeout: float = 30.0,
+        timeout: float = 60.0,
         registry: ToolRegistry | None = None,
         http_client: httpx.AsyncClient | None = None,
     ):

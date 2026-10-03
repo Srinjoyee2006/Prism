@@ -36,6 +36,7 @@ from src.tools.mock_tools import (
     mock_search_flights,
     mock_set_temperature,
 )
+from src.tools.normalizer import normalize_tool_arguments
 from src.tools.schemas import get_voice_agent_tool_registry
 
 logger = logging.getLogger(__name__)
@@ -211,6 +212,9 @@ class VoiceAgentOrchestrator:
             # 2. Stage valid tool proposals through the ToolController Commit Gate
             staged_proposals: list[StagedProposal] = []
             for proposal in llm_response.valid_tool_proposals:
+                proposal.arguments = normalize_tool_arguments(
+                    proposal.tool_name, proposal.arguments
+                )
                 logger.info(
                     "Orchestrator: Submitting proposal '%s' (%s) to ToolController",
                     proposal.tool_name,

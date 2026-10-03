@@ -37,7 +37,7 @@ async def mock_set_temperature(arguments: dict[str, Any]) -> dict[str, Any]:
         "temperature_c": temperature_c,
         "message": f"Temperature in '{zone}' set to {temperature_c}°C",
     }
-    logger.debug("mock_set_temperature → %r", result)
+    logger.debug("mock_set_temperature -> %r", result)
     return result
 
 
@@ -64,7 +64,7 @@ async def mock_search_flights(arguments: dict[str, Any]) -> dict[str, Any]:
             {"flight_id": "BA202", "price_usd": 510, "duration_h": 8.1},
         ],
     }
-    logger.debug("mock_search_flights → %d results", len(result["flights"]))
+    logger.debug("mock_search_flights -> %d results", len(result["flights"]))
     return result
 
 
@@ -84,7 +84,7 @@ async def mock_get_exchange_rate(arguments: dict[str, Any]) -> dict[str, Any]:
     rates = {("USD", "INR"): 83.5, ("EUR", "USD"): 1.08, ("GBP", "EUR"): 1.17}
     rate = rates.get((from_c, to_c), 1.0)
     result = {"status": "ok", "from": from_c, "to": to_c, "rate": rate}
-    logger.debug("mock_get_exchange_rate → %r", result)
+    logger.debug("mock_get_exchange_rate -> %r", result)
     return result
 
 
@@ -123,5 +123,5 @@ def blocking_track_order(arguments: dict[str, Any]) -> dict[str, Any]:
         "shipment_status": "in_transit",
         "estimated_delivery": "2025-03-15",
     }
-    logger.debug("blocking_track_order → %r", result)
+    logger.debug("blocking_track_order -> %r", result)
     return result

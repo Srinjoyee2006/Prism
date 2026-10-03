@@ -1,0 +1,251 @@
+{
+  "pid": "66c4f3cb14cbfc4db836bd4e",
+  "example_id": "ecommerce_06",
+  "category": "ecommerce_support",
+  "title": "Simple Cart Addition",
+  "provider": "prism_local",
+  "evaluated_at": "2026-10-03T19:22:02.226947+00:00",
+  "inference_time_s": 83.3,
+  "room_name": "fdb-ecommerce_06-e08a65",
+  "stream_start_time": 1791055258.8128483,
+  "input_transcript": "So I think could you add two items of two of the items K2 to my card? I need one for me and  one as a gift for my friend.",
+  "input_asr_chunks": [
+    {
+      "text": "So",
+      "timestamp": [
+        1.42,
+        2.12
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        2.12,
+        2.38
+      ]
+    },
+    {
+      "text": "think",
+      "timestamp": [
+        2.38,
+        3.3
+      ]
+    },
+    {
+      "text": "could",
+      "timestamp": [
+        3.3,
+        3.62
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        3.62,
+        4.06
+      ]
+    },
+    {
+      "text": "add",
+      "timestamp": [
+        4.06,
+        4.46
+      ]
+    },
+    {
+      "text": "two",
+      "timestamp": [
+        4.46,
+        4.96
+      ]
+    },
+    {
+      "text": "items",
+      "timestamp": [
+        4.96,
+        6.14
+      ]
+    },
+    {
+      "text": "of",
+      "timestamp": [
+        6.14,
+        6.24
+      ]
+    },
+    {
+      "text": "two",
+      "timestamp": [
+        6.24,
+        6.44
+      ]
+    },
+    {
+      "text": "of",
+      "timestamp": [
+        6.44,
+        6.66
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        6.66,
+        6.88
+      ]
+    },
+    {
+      "text": "items",
+      "timestamp": [
+        6.88,
+        7.24
+      ]
+    },
+    {
+      "text": "K2",
+      "timestamp": [
+        7.24,
+        8.1
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        8.1,
+        8.26
+      ]
+    },
+    {
+      "text": "my",
+      "timestamp": [
+        8.26,
+        8.58
+      ]
+    },
+    {
+      "text": "card?",
+      "timestamp": [
+        8.58,
+        9.2
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        10.04,
+        10.16
+      ]
+    },
+    {
+      "text": "need",
+      "timestamp": [
+        10.16,
+        10.46
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        10.46,
+        10.8
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        10.8,
+        11.0
+      ]
+    },
+    {
+      "text": "me",
+      "timestamp": [
+        11.0,
+        11.42
+      ]
+    },
+    {
+      "text": "and",
+      "timestamp": [
+        11.42,
+        11.98
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        11.98,
+        12.38
+      ]
+    },
+    {
+      "text": "as",
+      "timestamp": [
+        12.38,
+        12.74
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        12.74,
+        12.96
+      ]
+    },
+    {
+      "text": "gift",
+      "timestamp": [
+        12.96,
+        13.18
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        13.18,
+        13.38
+      ]
+    },
+    {
+      "text": "my",
+      "timestamp": [
+        13.38,
+        13.64
+      ]
+    },
+    {
+      "text": "friend.",
+      "timestamp": [
+        13.64,
+        14.74
+      ]
+    }
+  ],
+  "user_speech_end_rel": 14.74,
+  "latency": {
+    "input_duration_s": 44.528,
+    "output_duration_s": 44.528,
+    "first_speech_s": 44.528
+  },
+  "transcript": "You  You",
+  "asr_chunks": [
+    {
+      "text": "You",
+      "timestamp": [
+        21.62,
+        23.02
+      ]
+    },
+    {
+      "text": "You",
+      "timestamp": [
+        31.16,
+        32.0
+      ]
+    }
+  ],
+  "audio_agent_speech_start": 21.62,
+  "perceived_total_latency": 6.88,
+  "actual_tool_calls": [],
+  "status": "completed"
+}
