@@ -68,9 +68,7 @@ async def run_demo(
         if not is_ready:
             print("\n[WARNING] Kokoro-FastAPI was not detected at", base_url)
             print("To start local Kokoro-FastAPI, run:")
-            print("    docker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi:cpu")
-            print("or install and run kokoro-fastapi:")
-            print("    pip install kokoro-fastapi && kokoro-fastapi")
+            print("    docker run -d -p 8880:8880 --name kokoro-fastapi ghcr.io/remsky/kokoro-fastapi-cpu:latest")
             print("\nFalling back to FakeTTS so you can verify audio playback architecture...")
             tts = FakeTTS(sample_rate=24000, chunk_count=8, chunk_duration_seconds=0.25, delay_per_chunk=0.05)
 

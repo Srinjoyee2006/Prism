@@ -95,15 +95,8 @@ python examples/demo_tts.py --text "Prism is an interruptible conversational AI 
 
 Prism utilizes **Kokoro** as its local, zero-cost neural text-to-speech engine. The recommended deployment uses the OpenAI-compatible Kokoro-FastAPI server:
 
-### Option 1: Docker (Recommended)
 ```powershell
-docker run -d -p 8880:8880 --name kokoro-fastapi ghcr.io/remsky/kokoro-fastapi:cpu
-```
-
-### Option 2: Python Package
-```powershell
-pip install kokoro-fastapi
-kokoro-fastapi
+docker run -d -p 8880:8880 --name kokoro-fastapi ghcr.io/remsky/kokoro-fastapi-cpu:latest
 ```
 
 Once running, Kokoro serves streaming 24000Hz 16-bit PCM at `http://localhost:8880/v1`.

@@ -198,7 +198,7 @@ class KokoroTTS(TTSProvider):
         except httpx.ConnectError as err:
             raise TTSConnectionError(
                 f"Cannot connect to Kokoro-FastAPI at {self.base_url}. "
-                "Ensure local service is running (e.g. via docker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi:cpu)."
+                "Ensure local service is running (e.g. via docker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest)."
             ) from err
         except asyncio.CancelledError:
             logger.info("KokoroTTS: Speech synthesis cancelled for '%s'", clean_text[:30])

@@ -97,12 +97,8 @@ All automated tests run 100% offline without requiring Kokoro or audio hardware:
 
 ### Starting Kokoro-FastAPI (Local Docker or Pip)
 ```bash
-# Option A: Run via Docker (Recommended)
-docker run -d -p 8880:8880 --name kokoro-fastapi ghcr.io/remsky/kokoro-fastapi:cpu
-
-# Option B: Run via Python Package
-pip install kokoro-fastapi
-kokoro-fastapi
+# Run CPU version via Docker:
+docker run -d -p 8880:8880 --name kokoro-fastapi ghcr.io/remsky/kokoro-fastapi-cpu:latest
 ```
 
 ### Running the Local TTS Demo
