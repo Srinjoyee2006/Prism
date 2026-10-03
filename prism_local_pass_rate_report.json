@@ -1,6 +1,6 @@
 {
   "benchmark_name": "In-the-Wild Speech & Multi-Step Tool Calling",
-  "evaluated_at": "2026-10-04T01:05:16.220274",
+  "evaluated_at": "2026-10-04T03:27:40.321116",
   "total_scenarios": 7,
   "overall_pass_rate": 0.0,
   "passed": 0,

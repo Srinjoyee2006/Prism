@@ -11,10 +11,17 @@ import json
 import logging
 import math
 import subprocess
+import sys
 import time
 import wave
 from pathlib import Path
 from typing import Any
+
+# Ensure UTF-8 output on Windows consoles
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 import numpy as np
 from faster_whisper import WhisperModel
@@ -121,10 +128,16 @@ async def run_livekit_stream(
     agent_spoke = False
     last_agent_audio_time: float = 0.0
 
+    stream_start_time: float = 0.0
+
+    speech_frame_count = 0
+
     async def _receive_agent_audio(track: rtc.Track) -> None:
-        nonlocal write_pos, agent_spoke, last_agent_audio_time
+        nonlocal write_pos, agent_spoke, last_agent_audio_time, speech_frame_count
         stream = rtc.AudioStream(track, sample_rate=CAPTURE_SAMPLE_RATE, num_channels=1)
         await recording_started.wait()
+
+        thresh_sec = (user_speech_end or 0.0) + 3.0
 
         try:
             while not recording_stop.is_set():
@@ -133,9 +146,16 @@ async def run_livekit_stream(
                     frame = frame_event.frame
                     samples = np.frombuffer(bytes(frame.data), dtype=np.int16)
                     n = len(samples)
-                    if n > 0 and np.max(np.abs(samples)) > 400:
-                        agent_spoke = True
+                    cur_elapsed = (time.time() - stream_start_time) if stream_start_time > 0 else 0.0
+
+                    if cur_elapsed >= thresh_sec and n > 0 and np.max(np.abs(samples)) > 2000:
+                        speech_frame_count += 1
+                        if speech_frame_count >= 6:
+                            agent_spoke = True
+                            last_agent_audio_time = time.time()
+                    elif agent_spoke and n > 0 and np.max(np.abs(samples)) > 1200:
                         last_agent_audio_time = time.time()
+
                     remaining = target_samples - write_pos
                     if remaining <= 0:
                         break
@@ -198,16 +218,16 @@ async def run_livekit_stream(
 
     # Wait for the agent to connect and publish its audio track so it doesn't miss speech
     if not agent_ready.is_set():
-        logger.info("Waiting for agent to initialize and subscribe in room '%s'...", room_name)
+        print(f"  [WAIT] Waiting for agent track in room '{room_name}'...")
         try:
-            await asyncio.wait_for(agent_ready.wait(), timeout=15.0)
-            logger.info("Agent ready in room. Beginning audio stream.")
+            await asyncio.wait_for(agent_ready.wait(), timeout=10.0)
+            print("  [AGENT] Agent connected and ready in room. Beginning audio stream.")
         except asyncio.TimeoutError:
-            logger.warning("Agent track not detected within 15s; beginning audio stream anyway.")
+            print("  [WARN] Agent track not detected within 10s; beginning audio stream anyway.")
     else:
-        logger.info("Agent already subscribed in room '%s'. Beginning audio stream.", room_name)
+        print(f"  [AGENT] Agent already ready in room '{room_name}'. Beginning audio stream.")
 
-    await asyncio.sleep(0.3)
+    await asyncio.sleep(0.2)
 
     samples_per_chunk = src_rate * CHUNK_DURATION_MS // 1000
     chunk_bytes = samples_per_chunk * src_channels * SAMPLE_WIDTH
@@ -217,8 +237,10 @@ async def run_livekit_stream(
 
     offset = 0
     silence_chunk = b"\x00" * chunk_bytes
-    # If user speech end is known, ensure we stream all speech plus 2.0s of silence for clean VAD boundary
-    min_stream_sec = (user_speech_end + 2.0) if user_speech_end is not None else duration_sec
+    # If user speech end is known, require at least user_speech_end + 4.5s before early completion
+    min_stream_sec = (user_speech_end + 4.5) if user_speech_end is not None else duration_sec
+    # Ceiling to prevent lingering if agent produces no response
+    max_stream_sec = min(duration_sec, (user_speech_end + 15.0) if user_speech_end is not None else duration_sec)
 
     while True:
         elapsed = time.time() - stream_start_time
@@ -226,11 +248,15 @@ async def run_livekit_stream(
             break
 
         # Check for early completion:
-        # All human speech has been streamed, agent has responded and finished speaking (>2.5s post-response silence)
+        # All human speech has been streamed, agent has responded and finished speaking (>2.0s post-response silence)
         if elapsed >= min_stream_sec and agent_spoke and last_agent_audio_time > 0:
-            if time.time() - last_agent_audio_time > 2.5:
-                logger.info("Agent response complete (spoken & 2.5s silence). Ending exchange at %.2fs.", elapsed)
+            if time.time() - last_agent_audio_time > 2.0:
+                logger.info("Agent response complete (spoken & 2.0s silence). Ending exchange at %.2fs.", elapsed)
                 break
+
+        if elapsed >= max_stream_sec:
+            logger.info("Reached maximum exchange ceiling (%.2fs). Ending exchange.", max_stream_sec)
+            break
 
         if offset < len(pcm_data):
             end = min(offset + chunk_bytes, len(pcm_data))
@@ -262,11 +288,23 @@ async def run_livekit_stream(
             except asyncio.CancelledError:
                 pass
 
-    out_bytes = output_buf.tobytes()
+    if write_pos > 0:
+        out_bytes = output_buf[:write_pos].tobytes()
+        captured_duration = write_pos / CAPTURE_SAMPLE_RATE
+    else:
+        out_bytes = output_buf.tobytes()
+        captured_duration = duration_sec
+
     write_wav(output_path, out_bytes, CAPTURE_SAMPLE_RATE, 1)
-    logger.info("Saved agent output audio: %s (%.2fs)", output_path, duration_sec)
+    logger.info("Saved agent output audio: %s (%.2fs)", output_path, captured_duration)
 
     await room.disconnect()
+    async with api.LiveKitAPI(url, api_key, api_secret) as lk_api:
+        try:
+            await lk_api.room.delete_room(api.DeleteRoomRequest(room=room_name))
+        except Exception as exc:  # noqa: BLE001
+            logger.debug("Room cleanup note: %s", exc)
+
     return room_name, stream_start_time
 
 

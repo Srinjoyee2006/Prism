@@ -67,7 +67,7 @@ class KokoroTTS(TTSProvider):
     def _get_client(self) -> httpx.AsyncClient:
         """Lazily initialize or return an async HTTP client."""
         if self._client is None or self._client.is_closed:
-            self._client = httpx.AsyncClient(timeout=self.timeout)
+            self._client = httpx.AsyncClient(timeout=self.timeout, verify=False)
             self._owns_client = True
         return self._client
 

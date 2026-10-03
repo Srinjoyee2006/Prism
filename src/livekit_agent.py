@@ -51,10 +51,9 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from dotenv import load_dotenv
-from livekit.agents import Agent, AgentSession, JobContext, WorkerOptions, cli
-from livekit.agents.voice.room_io import RoomOptions
-
 from livekit import rtc
+from livekit.agents import JobContext, JobExecutorType, JobRequest, WorkerOptions, cli
+
 from src.agent.orchestrator import (
     DEFAULT_SYSTEM_PROMPT,
     VoiceAgentOrchestrator,
@@ -107,19 +106,30 @@ def get_shared_stt(model_name: str = "tiny.en") -> FasterWhisperSTT:
     return _WARMED_STT
 
 
-def get_shared_kokoro(base_url: str, voice: str) -> KokoroTTS:
+def get_shared_kokoro(
+    base_url: str | None = None,
+    voice: str | None = None,
+) -> KokoroTTS:
     """Return shared KokoroTTS client instance."""
     global _WARMED_KOKORO
     if _WARMED_KOKORO is None:
-        _WARMED_KOKORO = KokoroTTS(base_url=base_url, voice=voice, sample_rate=24000, timeout=10.0)
+        url = base_url or os.getenv("KOKORO_BASE_URL", "http://localhost:8880/v1")
+        v = voice or os.getenv("KOKORO_VOICE", "af_heart")
+        _WARMED_KOKORO = KokoroTTS(base_url=url, voice=v, sample_rate=24000, timeout=10.0)
     return _WARMED_KOKORO
 
 
-def get_shared_ollama(model: str, base_url: str, timeout: float) -> OllamaClient:
+def get_shared_ollama(
+    model: str | None = None,
+    base_url: str | None = None,
+    timeout: float = 60.0,
+) -> OllamaClient:
     """Return shared OllamaClient instance."""
     global _WARMED_OLLAMA
     if _WARMED_OLLAMA is None:
-        _WARMED_OLLAMA = OllamaClient(model=model, base_url=base_url, timeout=timeout)
+        m = model or os.getenv("OLLAMA_MODEL", "qwen2.5:1.5b")
+        url = base_url or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+        _WARMED_OLLAMA = OllamaClient(model=m, base_url=url, timeout=timeout)
     return _WARMED_OLLAMA
 
 
@@ -151,7 +161,7 @@ class PrismLiveKitAgent:
         self.benchmark_mode = (
             benchmark_mode
             if benchmark_mode is not None
-            else os.getenv("PRISM_BENCHMARK_MODE", "0").strip().lower() in ("1", "true", "yes")
+            else os.getenv("PRISM_BENCHMARK_MODE", "1").strip().lower() in ("1", "true", "yes")
         )
 
         # Pipeline components
@@ -161,11 +171,11 @@ class PrismLiveKitAgent:
         self.tts_manager: TTSPlaybackManager | None = None
         self.tool_controller: ToolController | None = None
         self.orchestrator: VoiceAgentOrchestrator | None = None
-        self.agent_session: AgentSession | None = None
         self.local_track: rtc.LocalAudioTrack | None = None
         self._room: rtc.Room | None = None
 
         self._shutdown_event = asyncio.Event()
+        self._active_proposal_tasks: set[asyncio.Task[Any]] = set()
 
     async def initialize(self, room: rtc.Room) -> None:
         """Initialize and wire all local Prism components with the LiveKit room."""
@@ -264,7 +274,9 @@ class PrismLiveKitAgent:
         # 6. Monitor and Speak Callbacks for Orchestrator
         async def on_tool_proposed(proposal: ToolProposal, staged: StagedProposal) -> None:
             logger.info("Proposal '%s' staged (quiet window active). Monitoring...", staged.tool_name)
-            asyncio.create_task(self._monitor_staged_proposal(staged))
+            task = asyncio.create_task(self._monitor_staged_proposal(staged))
+            self._active_proposal_tasks.add(task)
+            task.add_done_callback(self._active_proposal_tasks.discard)
 
         async def on_llm_response(response: LLMResponse) -> None:
             # If model produced conversational response without proposing tools, speak it
@@ -349,7 +361,7 @@ class PrismLiveKitAgent:
             except Exception as exc:  # noqa: BLE001
                 logger.warning("Spoken error feedback warning: %s", exc)
 
-    async def _delayed_empty_room_shutdown(self, delay: float = 1.5) -> None:
+    async def _delayed_empty_room_shutdown(self, delay: float = 0.5) -> None:
         """Wait briefly after all remote participants leave, then exit the room to free the worker."""
         await asyncio.sleep(delay)
         if self._room and len(self._room.remote_participants) == 0:
@@ -364,23 +376,6 @@ class PrismLiveKitAgent:
         # Initialize local components
         await self.initialize(room)
 
-        # Start LiveKit AgentSession with RoomOptions
-        # close_on_disconnect=False prevents abrupt cancellation during in-flight commit execution,
-        # but empty-room listener below ensures the worker is promptly freed once participants leave.
-        room_options = RoomOptions(
-            close_on_disconnect=False,
-            audio_input=False,
-            audio_output=False,
-        )
-        self.agent_session = AgentSession(turn_detection=None)
-        agent_instructions = self.orchestrator.system_prompt if self.orchestrator else DEFAULT_SYSTEM_PROMPT
-        agent = Agent(instructions=agent_instructions, turn_detection=None)
-
-        session_task = asyncio.create_task(
-            self.agent_session.start(agent=agent, room=room, room_options=room_options),
-            name="LiveKitAgentSessionHost",
-        )
-
         # Start the Prism orchestrator
         if self.orchestrator:
             await self.orchestrator.start()
@@ -393,10 +388,10 @@ class PrismLiveKitAgent:
             logger.info("Participant '%s' left room '%s'.", participant.identity, room.name)
             if len(room.remote_participants) == 0:
                 logger.info("Room '%s' has no more remote participants. Scheduling clean exit...", room.name)
-                asyncio.create_task(self._delayed_empty_room_shutdown(delay=1.5))
+                asyncio.create_task(self._delayed_empty_room_shutdown(delay=0.2))
 
         # Register shutdown handler
-        async def on_shutdown() -> None:
+        async def on_shutdown(*args: Any, **kwargs: Any) -> None:
             logger.info("LiveKit JobContext requested shutdown.")
             self._shutdown_event.set()
 
@@ -409,12 +404,6 @@ class PrismLiveKitAgent:
             logger.info("Agent run task cancelled.")
         finally:
             await self.shutdown()
-            if not session_task.done():
-                session_task.cancel()
-                try:
-                    await session_task
-                except asyncio.CancelledError:
-                    pass
 
     async def shutdown(self) -> None:
         """Gracefully drain the Commit Gate and shut down all room-specific components."""
@@ -423,28 +412,49 @@ class PrismLiveKitAgent:
         # 1. Drain pending proposals in ToolController (allows quiet window and execution to complete)
         if self.tool_controller:
             logger.info("Draining ToolController Commit Gate...")
-            await self.tool_controller.drain(timeout=1.5)
+            await self.tool_controller.drain(timeout=2.0)
 
-        # 2. Stop Orchestrator
+        # 2. Allow active proposal tasks to complete spoken feedback
+        if self._active_proposal_tasks:
+            logger.info("Waiting for %d proposal callback tasks...", len(self._active_proposal_tasks))
+            await asyncio.gather(*self._active_proposal_tasks, return_exceptions=True)
+
+        # 3. Stop Orchestrator
         if self.orchestrator:
             await self.orchestrator.stop()
 
-        # 3. Stop Audio Player
+        # 4. Stop Audio Player
         if self.audio_player:
             await self.audio_player.stop()
 
-        # 4. Close Audio Source
+        # 5. Close Audio Source
         if self.audio_source:
             await self.audio_source.close()
 
-        # 5. Close AgentSession
-        if self.agent_session:
+        # 5. Disconnect from LiveKit room immediately
+        if self._room and self._room.isconnected():
+            logger.info("Disconnecting agent from LiveKit room '%s'...", self._room.name)
             try:
-                await self.agent_session.aclose()
+                await self._room.disconnect()
             except Exception as exc:  # noqa: BLE001
-                logger.debug("AgentSession aclose note: %s", exc)
+                logger.debug("Room disconnect note: %s", exc)
 
         logger.info("Prism LiveKit Agent shutdown complete.")
+
+
+_ACTIVE_ROOMS: set[str] = set()
+
+
+async def request_fnc(req: JobRequest) -> None:
+    """Accept incoming job requests while rejecting duplicate requests for the same room."""
+    room_name = req.room.name
+    if room_name in _ACTIVE_ROOMS:
+        logger.warning("Duplicate job request for room '%s' rejected.", room_name)
+        await req.reject()
+        return
+    _ACTIVE_ROOMS.add(room_name)
+    logger.info("Accepted job request for room '%s' (job_id=%s).", room_name, req.id)
+    await req.accept()
 
 
 async def entrypoint(ctx: JobContext) -> None:
@@ -454,18 +464,26 @@ async def entrypoint(ctx: JobContext) -> None:
     logger.info("Connected to room: %s. Launching Prism Agent...", ctx.room.name)
 
     agent = PrismLiveKitAgent()
-    await agent.run(ctx)
+    try:
+        await agent.run(ctx)
+    finally:
+        _ACTIVE_ROOMS.discard(ctx.room.name)
+        logger.info("Agent entrypoint for room '%s' finished cleanly.", ctx.room.name)
+        if ctx.room.isconnected():
+            logger.info("Ensuring room '%s' is disconnected...", ctx.room.name)
+            try:
+                await ctx.room.disconnect()
+            except Exception as exc:  # noqa: BLE001
+                logger.debug("Entrypoint room disconnect note: %s", exc)
 
 
 def prewarm(proc: Any) -> None:
     """Prewarm heavy neural models during worker startup."""
     logger.info("Pre-warming persistent neural models...")
     get_shared_vad()
-    stt = get_shared_stt()
-    try:
-        asyncio.run(stt.warmup())
-    except Exception as exc:  # noqa: BLE001
-        logger.debug("Prewarm notice: %s", exc)
+    get_shared_stt()
+    get_shared_kokoro()
+    get_shared_ollama()
     logger.info("Persistent neural models successfully warmed up.")
 
 
@@ -474,4 +492,23 @@ if __name__ == "__main__":
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     )
-    cli.run_app(WorkerOptions(entrypoint_fnc=entrypoint, prewarm_fnc=prewarm))
+    logger.info("Pre-warming persistent neural models before worker startup...")
+    get_shared_vad()
+    _stt = get_shared_stt()
+    try:
+        asyncio.run(_stt.warmup())
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("Warmup note: %s", exc)
+    get_shared_kokoro()
+    get_shared_ollama()
+    logger.info("Persistent models pre-warmed. Launching LiveKit Worker...")
+    cli.run_app(
+        WorkerOptions(
+            entrypoint_fnc=entrypoint,
+            request_fnc=request_fnc,
+            prewarm_fnc=prewarm,
+            job_executor_type=JobExecutorType.THREAD,
+            load_threshold=float("inf"),
+            initialize_process_timeout=30.0,
+        )
+    )

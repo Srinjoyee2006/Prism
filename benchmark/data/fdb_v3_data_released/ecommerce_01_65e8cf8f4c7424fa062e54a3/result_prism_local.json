@@ -4,10 +4,10 @@
   "category": "ecommerce_support",
   "title": "Simple Order Tracking",
   "provider": "prism_local",
-  "evaluated_at": "2026-10-03T19:35:15.684050+00:00",
-  "inference_time_s": 75.38,
-  "room_name": "fdb-ecommerce_01-b7b45d",
-  "stream_start_time": 1791056067.60626,
+  "evaluated_at": "2026-10-03T21:57:39.782936+00:00",
+  "inference_time_s": 49.71,
+  "room_name": "fdb-ecommerce_01-5bf857",
+  "stream_start_time": 1791064624.3595772,
   "input_transcript": "like you know well I ordered something last week and I haven't received it yet  could you track it for me the order ID is a b c 1 2 3",
   "input_asr_chunks": [
     {
